@@ -10,6 +10,7 @@ import { OutgoingMessage } from './OutgoingMessage.js'
 import { MessageReceiver } from './MessageReceiver.js'
 import { Debugger } from './Debugger.js'
 import { onStatelessPayload } from './types.js'
+import { listenerDecr, listenerIncr } from './stats.js'
 
 export class Connection {
 
@@ -71,7 +72,9 @@ export class Connection {
     this.pingInterval = setInterval(this.check.bind(this), this.timeout)
 
     this.webSocket.on('close', this.boundClose)
+    listenerIncr('websocket.close')
     this.webSocket.on('pong', this.boundHandlePong)
+    listenerIncr('websocket.pong')
 
     this.sendCurrentAwareness()
   }
@@ -164,7 +167,9 @@ export class Connection {
       }
 
       this.webSocket.removeListener('close', this.boundClose)
+      listenerDecr('websocket.close')
       this.webSocket.removeListener('pong', this.boundHandlePong)
+      listenerDecr('websocket.pong')
 
       done()
     })

@@ -29,6 +29,7 @@ import {
 } from './types.js'
 import { getParameters } from './util/getParameters.js'
 import { useDebounce } from './util/debounce'
+import { listenerIncr } from './stats'
 
 export const defaultConfiguration = {
   name: null,
@@ -457,6 +458,7 @@ export class Hocuspocus {
         states: awarenessStatesToArray(document.awareness.getStates()),
       })
     })
+    listenerIncr('document.update')
 
     return document
   }

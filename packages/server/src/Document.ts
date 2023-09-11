@@ -6,6 +6,7 @@ import { AwarenessUpdate } from './types.js'
 import Connection from './Connection.js'
 import { OutgoingMessage } from './OutgoingMessage.js'
 import { Debugger } from './Debugger.js'
+import { listenerIncr } from './stats.js'
 
 export class Document extends Doc {
 
@@ -46,7 +47,9 @@ export class Document extends Doc {
     this.awareness.setLocalState(null)
 
     this.awareness.on('update', this.handleAwarenessUpdate.bind(this))
+    listenerIncr('awareness.update')
     this.on('update', this.handleUpdate.bind(this))
+    listenerIncr('document.update')
 
     this.logger = logger
     this.isLoading = true

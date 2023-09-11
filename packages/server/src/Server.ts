@@ -3,6 +3,7 @@ import {
 } from 'http'
 import WebSocket, { WebSocketServer } from 'ws'
 import { Hocuspocus } from './Hocuspocus'
+import { listenerIncr } from './stats'
 
 export class Server {
   httpServer: HTTPServer
@@ -33,9 +34,11 @@ export class Server {
         this.hocuspocus.debugger.log('Error emitted from webSocket instance:')
         this.hocuspocus.debugger.log(error)
       })
+      listenerIncr('websocket.error')
 
       this.hocuspocus.handleConnection(incoming, request)
     })
+    listenerIncr('websocketserver.connection')
   }
 
   setupHttpUpgrade = () => {
@@ -65,6 +68,7 @@ export class Server {
         }
       }
     })
+    listenerIncr('httpserver.upgrade')
   }
 
   requestHandler = async (request: IncomingMessage, response: ServerResponse) => {
