@@ -458,7 +458,7 @@ export class Hocuspocus {
         states: awarenessStatesToArray(document.awareness.getStates()),
       })
     })
-    listenerIncr('document.update')
+    listenerIncr('awareness.update')
 
     return document
   }
